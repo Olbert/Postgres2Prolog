@@ -1,0 +1,100 @@
+openDatabase :-
+odbc_connect('postgresqlProlog',
+_,[ user(postgres),password('1234'),
+alias(postgresqlProlog),open(once)]).
+
+closeDatabase:-
+odbc_disconnect(postgresqlProlog).
+
+getNameConnection:-
+odbc_current_connection(Alias,Dsn),
+write('Alias'-Alias),nl,
+write('Dsn'-Dsn).
+
+getPropertyConnection:-
+odbc_get_connection('postgresqlProlog',database_name(Change1)),
+odbc_get_connection('postgresqlProlog',dbms_name(Change2)),
+odbc_get_connection('postgresqlProlog',dbms_version(Change3)),
+odbc_get_connection('postgresqlProlog',driver_name(Change4)),
+odbc_get_connection('postgresqlProlog',driver_version(Change5)),
+odbc_get_connection('postgresqlProlog',driver_odbc_version(Change6)),
+odbc_get_connection('postgresqlProlog',active_statements(Change7)),
+write('Database Name' -Change1), nl,
+write('Database Engine' -Change2), nl,
+write('Engine version' -Change3), nl,
+write('Driver Name' -Change4), nl,
+write('driver version' -Change5), nl,
+write('ODBCC Version' -Change6), nl,
+write('Active Query' -Change7), nl.
+
+getDataSource:-
+odbc_data_source(DSN,Description),
+write(DSN+Description).
+
+getTables:-
+odbc_current_table(postgresqlProlog,Table),
+write(Table).
+
+getColumns:-
+odbc_table_column(postgresqlProlog,Table,Column),
+write(Table-Column).
+
+
+getColumns(Table):-
+odbc_table_column(postgresqlProlog,Table,Column),
+write(Table-Column).
+
+
+getPersonsList:-
+odbc_query(postgresqlProlog,'SELECT * from "Person"' ,Row,[]),
+write(Row).
+
+getList(Table):-
+openDatabase,
+concat('SELECT * from "',Table,X),
+concat(X,'"',Y),
+odbc_query(postgresqlProlog,Y ,Row,[types([integer,string,string,string])]),
+write_in(Row).
+
+getList(Table,Id):-
+openDatabase,
+concat('SELECT * from "',Table,X),
+concat(X,'" where id =',Y),
+concat(Y,Id,Z),
+odbc_query(postgresqlProlog,Z ,Row,[types([integer,string,string,string])]),
+write(Row).
+
+
+updateList(Table,Id,Name,Value):-
+openDatabase,
+concat('UPDATE "',Table, X1),
+concat(X1,'" SET ',X2),
+concat(X2,Name,X3),
+concat(X3,' = ',X4),
+concat(X4,Value,X5),
+concat(X5,' WHERE id = ',X6),
+concat(X6,Id,X),
+odbc_query(postgresqlProlog,X, Affected,[types([integer,string,string,string])]),
+write(Affected).
+
+deleteList(Table,Id):-
+openDatabase,
+concat('DELETE from "',Table,X),
+concat(X,'" WHERE Id = ',Y),
+concat(Y,Id,Z),
+odbc_query(postgresqlProlog,Z, Affected,[types([integer,string,string,string])]),
+write(Affected).
+
+
+
+
+
+
+
+
+
+
+
+
+
+

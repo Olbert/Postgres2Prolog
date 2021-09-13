@@ -1,0 +1,19 @@
+:- dynamic row/4.
+
+row(1, "Name1", "Phone1", "Profession1").
+row(5, tyuio, '555', '55').
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(2, "Name2", "Phone2", "Profession2").
+row(3, "Name3", "Phone3", "Profession3").
+row(5, "Name4", "Phone4", "Profession4").
+row(6, "Name5", "Phone5", "Profession5").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+row(1, "Name1", "Phone1", "Profession1").
+

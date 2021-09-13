@@ -1,0 +1,221 @@
+:- use_module(library(pce)).
+:- include('C:/Users/iampi/Documents/Prolog/PrologPostgres Project/File.pl').
+:- include('C:/Users/iampi/Documents/Prolog/PrologPostgres Project/LocalBase.pl').
+:- include('C:/Users/iampi/Documents/Prolog/PrologPostgres Project/DatabaseConnect.pl').
+
+forma :-
+   new(Dialog, dialog('База Postgres')),
+	send_list(Dialog,append,
+		  [
+		   button(окно_добавления,and(message(@prolog,write_form),
+			  message(Dialog, destroy))),
+                  button(окно_работы_с_БД,and(message(@prolog,db_form),
+			  message(Dialog, destroy))),
+			      button(окно_изменения,and(message(@prolog,edit_form),
+			  message(Dialog, destroy))),
+                  button(окно_удаления,and(message(@prolog,delete_form),
+			  message(Dialog, destroy))),
+		  button(выход, message(Dialog, destroy))]),
+	send(Dialog,default_button,выход),
+	send(Dialog, open).
+
+
+write_form :-
+	new(Dialog, dialog('Добавление клиента')),
+	send_list(Dialog,append,
+		  [new(Id, int_item(id)),
+		   new(N1, text_item(фио)),
+		   new(N2, text_item(телефон)),
+		   new(N3, text_item(профессия)),
+
+		   button(назад,and(message(@prolog,forma),
+			  message(Dialog, destroy))),
+
+		   button(сохранить, and(message(@prolog,
+						 write_in,
+						 Id?selection,
+						 N1?selection,
+						 N2?selection,
+						 N3?selection),
+					 message(@prolog,forma_in))),
+		  button(выход, message(Dialog, destroy))]),
+
+	send(Dialog,default_button,сохранить),
+	send(Dialog, open).
+
+edit_form:-
+	new(Dialog,dialog('Редактирование клиента')),
+	    send_list(Dialog, append,[
+				 [new(Id, int_item(id)),
+				  new(N1, text_item(фио)),
+				  new(N2, text_item(телефон)),
+				  new(N3, text_item(профессия))],
+				  button(назад,and(message(@prolog,forma),
+						   message(Dialog, destroy))),
+				  button(найти, and(message(@prolog,
+							    poisk,
+							    Id?selection,N1,N2,N3))),
+                                  button(сохранить, and(message(@prolog,
+						 edit,
+						 Id?selection,
+						 N1?selection,
+						 N2?selection,
+						 N3?selection),
+					 message(@prolog,edit_form))),
+				  button(выход, message(Dialog, destroy))]),
+	    send(Dialog,default_button,сохранить),
+	    send(Dialog, open).
+
+
+delete_form:-
+	new(Dialog,dialog('Удаление клиента')),
+	    send_list(Dialog, append,
+		      [
+				 [new(Id, int_item(id)),
+				  new(N1, text_item(фио)),
+				  new(N2, text_item(телефон)),
+				  new(N3, text_item(профессия))],
+				  button(назад,and(message(@prolog,forma),
+						   message(Dialog, destroy))),
+				  button(найти, and(message(@prolog,
+							    poisk,
+							    Id?selection,
+							    N1,N2,N3),
+						    message(Dialog,destroy))),
+				  button(удалить, and(message(@prolog,
+							      delete_id,
+							      Id?selection),
+						      message(@prolog,delete_form))),
+				  button(выход, message(Dialog, destroy))]),
+
+	    send(Dialog,default_button,удалить),
+	    send(Dialog, open).
+
+
+
+
+
+
+db_form :-
+   new(Dialog, dialog('База Postgres')),
+	send_list(Dialog,append,
+		  [
+                   button(окно_скачивания,and(message(@prolog,db_get_form),
+			  message(Dialog, destroy))),
+                   button(окно_скачивания_c_id,and(message(@prolog, db_get_form_id),
+                                                        message(Dialog, destroy))),
+                   button(окно_изменения,and(message(@prolog,db_edit_form),
+			  message(Dialog, destroy))),
+                  button(окно_удаления,and(message(@prolog,db_delete_form),
+			  message(Dialog, destroy))),
+		  button(выход, message(Dialog, destroy))]),
+	send(Dialog,default_button,выход),
+	send(Dialog, open).
+
+
+
+
+db_get_form:-
+    new(Dialog,dialog('Работа с БД')),
+	    send_list(Dialog, append,
+		      [
+				 [new(Table, text_item(название_таблицы))],
+				  button(назад,and(message(@prolog,forma),
+						   message(Dialog, destroy))),
+				  button(скачать, and(message(@prolog,
+							    getDbList,
+							    Table?selection))),
+				  button(выход, message(Dialog, destroy))]),
+
+	    send(Dialog,default_button,скачать),
+	    send(Dialog, open).
+
+db_get_form_id:-
+    new(Dialog,dialog('Работа с БД')),
+	    send_list(Dialog, append,
+		      [
+				 [new(Table, text_item(название_таблицы)),
+                                  new(Id, int_item(id))],
+				  button(назад,and(message(@prolog,forma),
+						   message(Dialog, destroy))),
+				  button(скачать, and(message(@prolog,
+							    getDbList_id,
+							    Table?selection,
+                                                            Id?selection))),
+				  button(выход, message(Dialog, destroy))]),
+
+	    send(Dialog,default_button,скачать),
+	    send(Dialog, open).
+
+
+db_edit_form:-
+    new(Dialog,dialog('Работа с БД')),
+	    send_list(Dialog, append,
+		      [
+				 [new(Table, text_item(название_таблицы)),
+				 new(Id, text_item(id)),
+				 new(Name, text_item(имя_параметра)),
+				 new(Value, text_item(значение_параметра))],
+				  button(назад,and(message(@prolog,forma),
+						   message(Dialog, destroy))),
+				  button(скачать, and(message(@prolog,
+							    editDbList,
+							    Table?selection,
+                                                             Id?selection,
+                                                             Name?selection,
+                                                             Value?selection))),
+				  button(выход, message(Dialog, destroy))]),
+
+	    send(Dialog,default_button,скачать),
+	    send(Dialog, open).
+
+
+
+
+
+		db_delete_form:-
+    new(Dialog,dialog('Работа с БД')),
+	    send_list(Dialog, append,
+		      [
+                                   [new(Table, text_item(название_таблицы)),
+                                    new(Name, text_item(имя_параметра)),
+				 new(Value, text_item(значение_параметра))],
+				  button(назад,and(message(@prolog,forma),
+						   message(Dialog, destroy))),
+				  button(скачать, and(message(@prolog,
+							    deleteDbList,
+							    Table?selection,
+                                                              Name?selection,
+                                                             Value?selection))),
+				  button(выход, message(Dialog, destroy))]),
+
+	    send(Dialog,default_button,скачать),
+	    send(Dialog, open).
+
+
+
+
+
+getDbList(Table):-
+    getList(Table).
+
+getDbList_id(Table,Id):-
+    getList(Table,Id).
+
+setDbList(Table,Id,Name,Value):-
+    updateList(Table,Id,Name,Value).
+
+deleteDbList(Table,Name,Value):-
+    deleteList(Table,Name,Value).
+
+
+deleteDbList(Table,Id):-
+    deleteList(Table,Id).
+
+
+
+
+
+run:-
+   forma.
+:-run.
