@@ -5,7 +5,7 @@ Part of the article "Specialized Case Tools for the Development of Expert System
 ## Citation
 
 Please cite as 
-
+```bibtex
 @InProceedings{10.1007/978-3-319-77703-0_59,
 author="Burnashev, Rustam A.
 and Gubajdullin, Albert V.
@@ -17,3 +17,4 @@ publisher="Springer International Publishing",
 pages="599--605",
 }
 
+```
