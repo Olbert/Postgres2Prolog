@@ -2,6 +2,8 @@
 This project provides tools to convert PostgreSQL databases to Prolog files. 
 Part of the article "Specialized Case Tools for the Development of Expert Systems".
 
+Paper: https://link.springer.com/chapter/10.1007/978-3-319-77703-0_59
+
 ## Citation
 
 Please cite as 
